@@ -1,0 +1,36 @@
+<ion-view view-title="Settings">
+  <ion-content>
+    <form ng-submit="getWebData(settings,'department')">
+        <div class="list">
+          <label class="item item-input">
+              http://www.
+              <input type="text" placeholder="Department data address?" ng-model="settings.department">
+
+          </label>
+        </div>
+        <div class="padding">
+          <button type="submit" class="button button-block button-positive">Set Department address</button>
+        </div>
+
+      </form>
+      
+      <form ng-submit="getWebData(settings,'clinical')">
+        <div class="list">
+          <label class="item item-input">
+              http://www.
+              <input type="text" placeholder="Clinical data address?" ng-model="settings.clinical">
+
+          </label>
+        </div>
+        <div class="padding">
+          <button type="submit" class="button button-block button-positive">Set Clinical address</button>
+        </div>
+      </form>
+      
+
+      <div class="padding">
+          <button type="button" class="button button-block button-assertive" ng-click="goHome()">Home</button>
+        </div>
+        
+  </ion-content>
+</ion-view>
