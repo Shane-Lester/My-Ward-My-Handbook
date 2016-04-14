@@ -44,26 +44,26 @@ angular.module('starter.controllers', [])
 
 .controller('TodoListController',["$scope","NoteStore",function($scope,NoteStore){
 
-    
+
     $scope.notes= NoteStore.list();
-    
+
     $scope.remove = function(noteId){
-      NoteStore.remove(noteId);  
+      NoteStore.remove(noteId);
     };
-    
+
 }])
 
 .controller('EditListController',["$scope", "NoteStore", "$state", "$stateParams", function($scope,NoteStore, $state, $stateParams){
-    
-    
+
+
     var ID=$stateParams.noteId;
     $scope.note = angular.copy(NoteStore.get(ID));
-    
+
     $scope.save =function(){
         NoteStore.update($scope.note);
         $state.go('app.todolist')
     };
-    
+
 
 }])
 
@@ -73,7 +73,7 @@ angular.module('starter.controllers', [])
         title: '',
         description: ''
         };
-    
+
     $scope.save =function(){
         NoteStore.create($scope.note);
         $state.go('app.todolist')
@@ -82,13 +82,16 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ListController',["$scope", "$http", "$state", "$stateParams","$localstorage","$ionicHistory", function($scope, $http, $state, $stateParams,$localstorage,$ionicHistory){
-    
+.controller('ListController',["$scope", "$http", "$state", "$stateParams","$localstorage","$ionicHistory","Data", function($scope, $http, $state, $stateParams,$localstorage,$ionicHistory,Data){
+
     $scope.data={
         hideImage: true,
         showReorder: false
     }
-    
+
+    console.log(Data.getSettings());
+
+
     $scope.makeURL=function(){
         var URLObject=$localstorage.getObject('settings');
         console.log('making URL');
@@ -100,7 +103,7 @@ angular.module('starter.controllers', [])
             $scope.clinicalURL= "http://www." + URLObject.clinical;
             }
         console.log("clinicalURL = "+$scope.clinicalURL);
-        if(URLObject.department=="js/clinical.json"){
+        if(URLObject.department=="js/department.json"){
                 $scope.departmentURL= URLObject.department;
             }
         else{
@@ -108,25 +111,32 @@ angular.module('starter.controllers', [])
             }
         console.log("departmentURL = "+$scope.departmentURL);
     };
-    
+
     $scope.resetDefaultData= function(ClinOrDept){
         var newData = $localstorage.getObject('settings');
         if (ClinOrDept=="clinical"){
             newData.clinical='js/clinical.json';
         }
         if (ClinOrDept=="department"){
-            newData.department='js/clinical.json';
+            newData.department='js/department.json';
         }
 
        var newData = $localstorage.setObject('settings',newData);
         $scope.makeURL();
 
-   
+
     };
-   
-    
+
+
     $scope.makeURL();
-  
+
+    // Data.getData('clinical').then(
+    //   function(data){
+    //     console.log('got  '+ data['clinical']);
+    //   },
+    //   function(error){
+    //     console.log('got  '+ error);
+
     $http.get($scope.clinicalURL)
         .success(function(data){
             if(data.clinical){
@@ -150,7 +160,7 @@ angular.module('starter.controllers', [])
                       $state.go('app.home',{},{reload:true});
                         })
         });
-    
+
     $http.get($scope.departmentURL)
         .success(function(data){
             if (data.admin){
@@ -174,20 +184,13 @@ angular.module('starter.controllers', [])
                       $state.go('app.home',{},{reload:true});
                         })
         });
-    
+
         $scope.whichCondition=$stateParams.aId;
-
-
-
-  
-    
-
 }])
 
 .controller('SettingsController',["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory){
-    
-    $scope.getWebData=function(url,key){
 
+    $scope.getWebData=function(url,key){
         var newData = $localstorage.getObject('settings');
         if (key=="clinical"){
             newData.clinical=url.clinical;
@@ -198,9 +201,9 @@ angular.module('starter.controllers', [])
 
        var newData = $localstorage.setObject('settings',newData);
 
-   
+
     }
-   
+
     $scope.goHome=function(){
        $ionicHistory.nextViewOptions({
             disableBack: true
@@ -210,10 +213,8 @@ angular.module('starter.controllers', [])
                 $state.go('app.home');
             }
         )
-             
+
     }
-    
+
 
 }]);
-
-
