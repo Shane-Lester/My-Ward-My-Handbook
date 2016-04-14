@@ -31,6 +31,28 @@ angular.module('starter.dataService', [])
 
         return $http.get(storedSettings[type]);
 
+      },
+      makeURL: function(){
+        //need to edit the function to pass the made URL's back
+
+      var URLObject=$localstorage.getObject('settings');
+      console.log('making URL');
+      //if using local settings then don't add http://www.
+      if(URLObject.clinical=="js/clinical.json"){
+              $scope.clinicalURL= URLObject.clinical;
+          }
+      else{
+          $scope.clinicalURL= "http://www." + URLObject.clinical;
+          }
+      console.log("clinicalURL = "+$scope.clinicalURL);
+      if(URLObject.department=="js/department.json"){
+              $scope.departmentURL= URLObject.department;
+          }
+      else{
+          $scope.departmentURL = "http://www." + URLObject.department;
+          }
+      console.log("departmentURL = "+$scope.departmentURL);
       }
-  }
+    }
+
 }])

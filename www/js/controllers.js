@@ -130,12 +130,6 @@ angular.module('starter.controllers', [])
 
     $scope.makeURL();
 
-    // Data.getData('clinical').then(
-    //   function(data){
-    //     console.log('got  '+ data['clinical']);
-    //   },
-    //   function(error){
-    //     console.log('got  '+ error);
 
     $http.get($scope.clinicalURL)
         .success(function(data){
