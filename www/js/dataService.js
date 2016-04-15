@@ -34,25 +34,30 @@ angular.module('starter.dataService', [])
       },
       makeURL: function(){
         //need to edit the function to pass the made URL's back
+        var URLObject=$localstorage.getObject('settings');
+        //if using local settings then don't add http://www.
+        if(URLObject.clinical !== "js/clinical.json"){
+          //only add www if it's not already added
+          if(URLObject.department.indexOf('www')== -1){
+                  URLObject.clinical= "http://www." + URLObject.clinical;
+                }
+            }
+        else{
+          //backup in case of failed load of settings
+          URLObject.clinical="js/clinical.json";
+        }
 
-      var URLObject=$localstorage.getObject('settings');
-      console.log('making URL');
-      //if using local settings then don't add http://www.
-      if(URLObject.clinical=="js/clinical.json"){
-              $scope.clinicalURL= URLObject.clinical;
-          }
-      else{
-          $scope.clinicalURL= "http://www." + URLObject.clinical;
-          }
-      console.log("clinicalURL = "+$scope.clinicalURL);
-      if(URLObject.department=="js/department.json"){
-              $scope.departmentURL= URLObject.department;
-          }
-      else{
-          $scope.departmentURL = "http://www." + URLObject.department;
-          }
-      console.log("departmentURL = "+$scope.departmentURL);
+        if(URLObject.department!=="js/department.json"){
+          //only add www if it's not already added
+              if(URLObject.department.indexOf('www')==-1){
+                  URLObject.department = "http://www." + URLObject.department;
+                }
+            }
+        else{
+          //backup in case of failed load of settings
+          URLObject.department="js/department.json"
+        }
+          return URLObject;
       }
     }
-
 }])

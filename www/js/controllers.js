@@ -91,45 +91,14 @@ angular.module('starter.controllers', [])
 
     console.log(Data.getSettings());
 
-
     $scope.makeURL=function(){
-        var URLObject=$localstorage.getObject('settings');
-        console.log('making URL');
-        //if using local settings then don't add http://www.
-        if(URLObject.clinical=="js/clinical.json"){
-                $scope.clinicalURL= URLObject.clinical;
+        var URLObject=Data.makeURL();
+        $scope.clinicalURL= URLObject.clinical;
+        $scope.departmentURL= URLObject.department;
+        $localstorage.setObject('settings',URLObject);
             }
-        else{
-            $scope.clinicalURL= "http://www." + URLObject.clinical;
-            }
-        console.log("clinicalURL = "+$scope.clinicalURL);
-        if(URLObject.department=="js/department.json"){
-                $scope.departmentURL= URLObject.department;
-            }
-        else{
-            $scope.departmentURL = "http://www." + URLObject.department;
-            }
-        console.log("departmentURL = "+$scope.departmentURL);
-    };
-
-    $scope.resetDefaultData= function(ClinOrDept){
-        var newData = $localstorage.getObject('settings');
-        if (ClinOrDept=="clinical"){
-            newData.clinical='js/clinical.json';
-        }
-        if (ClinOrDept=="department"){
-            newData.department='js/department.json';
-        }
-
-       var newData = $localstorage.setObject('settings',newData);
-        $scope.makeURL();
-
-
-    };
-
 
     $scope.makeURL();
-
 
     $http.get($scope.clinicalURL)
         .success(function(data){
