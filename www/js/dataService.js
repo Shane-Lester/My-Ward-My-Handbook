@@ -56,8 +56,10 @@ angular.module('starter.dataService', [])
         else{
           //backup in case of failed load of settings
           URLObject.department="js/department.json"
+
         }
-          return URLObject;
+        $localstorage.setObject('settings',URLObject);
+        return URLObject;
       }
     }
 }])
