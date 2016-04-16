@@ -12,13 +12,13 @@ angular.module('starter.dataService', [])
       //initialise clinical and department data caches
       if(!clinicalCache || clinicalCache.clinical == "undefined"){
         var clinicalCache = {"clinical":{}};
-        getSettings();
-        clinicalCache = getClinicalSettings();
+        this.getSettings();
+        clinicalCache = this.getClinicalSettings();
       }
       if(!departmentCache || departmentCache.department == "undefined"){
         var departmentCache = {"clinical":{}};
-        getSettings();
-        clinicalCache = getDepartmentSettings();
+        this.getSettings();
+        clinicalCache = this.getDepartmentSettings();
       }
     },
     getSettings:function(){
