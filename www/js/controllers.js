@@ -88,6 +88,7 @@ angular.module('starter.controllers', [])
         hideImage: true,
         showReorder: false
     }
+    Data.initialize();
 
     console.log(Data.getSettings());
 
@@ -99,6 +100,9 @@ angular.module('starter.controllers', [])
             }
 
     $scope.makeURL();
+    $scope.resetDefaultData = function(){
+      //blank at the moment to keep everything tidy
+    }
 
     $http.get($scope.clinicalURL)
         .success(function(data){
@@ -126,12 +130,11 @@ angular.module('starter.controllers', [])
 
     $http.get($scope.departmentURL)
         .success(function(data){
-            if (data.admin){
-                $scope.admin=data.admin;
+            if (data.department){
+                $scope.department=data.department;
                 }
-                    //if no admin key then load default
+                    //if no department key then load default
             else{
-                console.log('no admin key');
                 $scope.resetDefaultData('department');
                 $ionicHistory.clearCache().then(function(){
 
@@ -151,10 +154,10 @@ angular.module('starter.controllers', [])
         $scope.whichCondition=$stateParams.aId;
 }])
 
-.controller('SettingsController',["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory){
+.controller('SettingsController',["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data",function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data){
 
     $scope.getWebData=function(url,key){
-        var newData = $localstorage.getObject('settings');
+        var newData = Data.getSettings();
         if (key=="clinical"){
             newData.clinical=url.clinical;
         }
@@ -162,9 +165,7 @@ angular.module('starter.controllers', [])
             newData.department=url.department;
         }
 
-       var newData = $localstorage.setObject('settings',newData);
-
-
+      Data.storeSettings(newData);
     }
 
     $scope.goHome=function(){

@@ -4,10 +4,27 @@ angular.module('starter.dataService', [])
 .factory('Data',['$localstorage','$http',function($localstorage, $http){
   var storedSettings ={};// private variable that tracks the stored settings
 
+
+
+
   return{
+    initialize:function(){
+      //initialise clinical and department data caches
+      if(!clinicalCache || clinicalCache.clinical == "undefined"){
+        var clinicalCache = {"clinical":{}};
+        getSettings();
+        clinicalCache = getClinicalSettings();
+      }
+      if(!departmentCache || departmentCache.department == "undefined"){
+        var departmentCache = {"clinical":{}};
+        getSettings();
+        clinicalCache = getDepartmentSettings();
+      }
+    },
     getSettings:function(){
       // console.log('getting settings');
       var settingsObj = {
+            root:"no root address submitted",
            clinical:"js/clinical.json",
            department:"js/department.json"
        };
@@ -21,6 +38,21 @@ angular.module('starter.dataService', [])
        }
          return storedSettings;
       },
+      storeSettings: function(newSettings){
+        this.getSettings();
+        if(newSettings.clinical){
+          storedSettings.clinical = newSettings.clinical;
+        }
+        if(newSettings.department){
+          storedSettings.department = newSettings.department;
+        }
+        $localstorage.setObject("settings",storedSettings);
+        this.makeURL();
+      },
+
+      getClinicalSettings:function(){},
+
+      getDepartmentSettings: function(){},
 
       getData: function(type){
         // function to retrieve data and send to controllers
@@ -37,9 +69,10 @@ angular.module('starter.dataService', [])
         var URLObject=$localstorage.getObject('settings');
         //if using local settings then don't add http://www.
         if(URLObject.clinical !== "js/clinical.json"){
+          console.log('creating clinical URL');
           //only add www if it's not already added
-          if(URLObject.department.indexOf('www')== -1){
-                  URLObject.clinical= "http://www." + URLObject.clinical;
+          if(URLObject.clinical.indexOf('www')== -1){
+                  URLObject.clinical= "http://www." + URLObject.clinical + "/docs/clinical.json";
                 }
             }
         else{
@@ -48,9 +81,11 @@ angular.module('starter.dataService', [])
         }
 
         if(URLObject.department!=="js/department.json"){
+          console.log('creating department URL');
           //only add www if it's not already added
               if(URLObject.department.indexOf('www')==-1){
-                  URLObject.department = "http://www." + URLObject.department;
+                console.log('decorating department URL');
+                  URLObject.department = "http://www." + URLObject.department + "/docs/department.json";
                 }
             }
         else{

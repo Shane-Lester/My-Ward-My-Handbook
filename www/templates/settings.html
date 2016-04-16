@@ -5,7 +5,7 @@
           <label class="item item-input">
               http://www.
               <input type="text" placeholder="Department data address?" ng-model="settings.department">
-
+              /docs/department.json
           </label>
         </div>
         <div class="padding">
@@ -13,24 +13,24 @@
         </div>
 
       </form>
-      
+
       <form ng-submit="getWebData(settings,'clinical')">
         <div class="list">
           <label class="item item-input">
               http://www.
               <input type="text" placeholder="Clinical data address?" ng-model="settings.clinical">
-
+              /docs/clinical.json
           </label>
         </div>
         <div class="padding">
           <button type="submit" class="button button-block button-positive">Set Clinical address</button>
         </div>
       </form>
-      
+
 
       <div class="padding">
           <button type="button" class="button button-block button-assertive" ng-click="goHome()">Home</button>
         </div>
-        
+
   </ion-content>
 </ion-view>

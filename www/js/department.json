@@ -1,6 +1,6 @@
 {
-    "admin":[
-        
+    "department":[
+
         {"title":"Consultants",
          "data":[
              {"title":"Mr Derek Bosman"},
@@ -67,7 +67,7 @@
              {"title":"ENT OPD reception"},
              {"subtitle":"54033"},
              {"item":"<hr>"},
-             
+
               {"title":"ENT casualty clinic"},
              {"subtitle":"54079"},
              {"item":"<hr>"},
@@ -91,63 +91,63 @@
              {"title":"Surgical admissions unit (female)"},
              {"subtitle":"54603"},
              {"item":"<hr>"},
-             
+
              {"title":"Surgical admissions unit (male)"},
              {"subtitle":"54602"},
              {"item":"<hr>"},
-             
+
              {"title":"Theatre 19 (paediatric theatre)"},
              {"subtitle":"55753"},
              {"item":"<hr>"},
-             
+
              {"title":"Theatre 20 (ENT theatre)"},
              {"subtitle":"55815"},
              {"item":"<hr>"},
-             
+
              {"title":"Theatre 21 (day case theatre)"},
              {"subtitle":"55272"},
              {"item":"<hr>"},
-             
+
              {"title":"Theatre 22 (daycase theatre"},
              {"subtitle":"54603"},
              {"item":"<hr>"},
-             
+
              {"title":"Theatre 27 (day case theatre)"},
              {"subtitle":"55273"},
              {"item":"<hr>"},
-             
+
              {"title":"Bev Mckinstry & Sonia Hannant (waiting list)"},
              {"subtitle":"54063"},
              {"item":"<hr>"},
-             
+
              {"title":"Haematology lab"},
              {"subtitle":"55691"},
              {"item":"<hr>"},
-             
+
              {"title":"Biochemistry lab"},
              {"subtitle":"54371"},
              {"item":"<hr>"},
-             
+
              {"title":"Blood bank"},
              {"subtitle":"52630"},
              {"item":"<hr>"},
-             
+
              {"title":"Radiology"},
              {"subtitle":"54823"},
              {"item":"<hr>"},
-             
+
              {"title":"Histology"},
              {"subtitle":"54383"},
              {"item":"<hr>"},
-             
+
              {"title":"IT helpdesk"},
              {"subtitle":"52525"},
              {"item":"<hr>"},
-             
+
              {"title":"Library"},
              {"subtitle":"54820"},
-             {"item":"<hr>"}                   
-             
+             {"item":"<hr>"}
+
          ]},
         {"title": "Admininstration",
          "data":[
@@ -165,7 +165,7 @@
              {"info1":"All annual and study leave requests should be sent to Satpal Singh who will confirm if the leave can be granted. It is important that you get together as a group and discuss leave at the beginning of the placement so that you are not all trying to take leave towards the end of the post."},
               {"info2":"The on call rota can be found on the intranet. This is organised by Lorraine Grayson. Please contact her with any queries."},
               {"item":"<hr>"}
-             
+
          ]},
         {"title":"Your Rotas",
          "data":[
@@ -192,7 +192,7 @@
              {"info2":"Due to bed pressures there are often outlying patients on other wards, particularly in the winter. It is imperative that these patients are seen EVERY DAY on the ward round."},
              {"item":"<br>"}
          ]},
-        
+
         {"title":"Ward Duties",
          "data":[
              {"info1":"The morning ward round starts at 0800 prompt and attendance is compulsory. At the weekend the ward round may start later."},
@@ -212,7 +212,7 @@
               {"item":"<hr>"},
              {"info1":"You will each be assigned a clinical (and/or educational) supervisor for your placement in the department. It is essential that you organise an appointment to see them in the first 2 weeks of the post."},
               {"item":"<hr>"}
-             
+
          ]},
         {"title":"On Call",
          "data":[
@@ -261,7 +261,7 @@
                   {"item":"<br>"},
              {"item":"Please check the timetable in the ENT reception for when these clinics are running. "},
                   {"item":"<br>"}
-            
+
          ]},
         {"title":"Theatres",
          "data":[
@@ -269,13 +269,13 @@
              {"info2":"The following theatres are used for ENT:"},
              {"item":"-Theatre 19-paediatric theatre<br>-Theatre 20 & 17-ENT theatre<br>-Theatre 22,21,27- day case theatres<br>-Main theatre sessions start at 0900 (Mr Banerjee’s list starts at 0830 on a Tuesday) and 1330.<br><br>Day case theatre sessions start at 0800 and 1330."},
                   {"item":"<br>"}
-             
+
          ]},
         {"title":"Teaching|Research",
          "data":[
              {"item":"You will be excused from your duties to attend any mandatory teaching i.e. GP teaching, foundation programme generic skills as long as there are enough doctors to cover the department in your absence. Please ensure that you discuss the dates in plenty of time with Satpal Singh.<br><br>There is regular on the job teaching in the assigned casualty clinic teaching sessions. We also have ad hoc departmental teaching at lunch times.<br><br>Sit in outpatient clinics and theatre sessions will also provide valuable teaching.<br><br>There is a clinical governance meeting on a bi-annual basis that has compulsory attendance if you are on duty.<br><br>We encourage all our first tier doctors to get involved in audit and research. Please discuss with your clinical/educational supervisor at your induction meeting. All clinical audit registration forms should be sent to Miss Blackmore."},
                   {"item":"<br>"}
          ]}
-        
+
     ]
 }

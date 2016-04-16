@@ -6,13 +6,13 @@
 <ion-view view-title="Information">
     <ion-content>
         <ion-list class="list-inset">
-            <ion-item class="item-text-wrap" 
-                      ng-repeat="item in admin|filter: {title:whichCondition}" >
-                
+            <ion-item class="item-text-wrap"
+                      ng-repeat="item in department|filter: {title:whichCondition}" >
+
                 <h1 ng-bind-html ="item.title" ></h1>
                 <div ng-repeat="info in item.data">
 
-                    
+
                     <h3>{{info.title}}</h3>
                     <h2>{{info.subtitle}}</h2>
                     <h2>{{info.heading}}</h2>
@@ -20,11 +20,11 @@
                     <h2>{{info.info1}}</h2>
                     <h2>{{info.info2}}</h2>
                     <h2 ng-bind-html="info.item"></h2>
-                    
+
                 </div>
             </ion-item>
 
-                
+
         </ion-list>
     </ion-content>
 </ion-view>
