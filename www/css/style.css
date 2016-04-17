@@ -3,11 +3,11 @@
 
 body{
     cursor:url('http://ionicframework.comimg/finger.png');
-    
+
 }
 .star .item-content{
     background-color: #EEE8D6 !important;
-    
+
 }
 
 .splash{
@@ -30,6 +30,7 @@ body{
 
 .tagline{
     font-size: 1.4rem;
+    padding:0;
 }
 
 .branding p{
@@ -44,7 +45,7 @@ body{
 .bar-positive, .tabs-positive>.tabs{
     background-color: :#417D9A !important;
     border-color:#417D9a
-        
+
 }
 
 .item-thumbnail-left img{
