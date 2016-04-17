@@ -154,18 +154,42 @@ angular.module('starter.controllers', [])
         $scope.whichCondition=$stateParams.aId;
 }])
 
-.controller('SettingsController',["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data",function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data){
+.controller('SettingsController',
+["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data",
+function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data){
+    $scope.$on('$ionicView.enter', function(){
+      $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
+      $scope.rootText = "Set root web address";
+      $scope.departmentButtonText = "Load Department Data";
+      $scope.clinicalButtonText = "Load Clinical Data";
+  });
 
-    $scope.getWebData=function(url,key){
-        var newData = Data.getSettings();
-        if (key=="clinical"){
-            newData.clinical=url.clinical;
-        }
-        if (key=="department"){
-            newData.department=url.department;
-        }
+    $scope.setRoot = function(root){
+      var newData =Data.getSettings();
+      if(root.length>0 && root.indexOf('www') == -1){
+        //ensure root isn't empty and doesnt' start with www
+        root = "http://www." + root + "/docs";
+        newData.root = root;
+        newData.clinical = root + "/clinical.json";
+        newData.department = root + "/department.json";
+        Data.storeSettings(newData);
+        $scope.buttonColour= "button-balanced";
+        $scope.rootText = "ROOT SET!";
 
-      Data.storeSettings(newData);
+        return true;
+      }
+      return false;
+    }
+
+    $scope.loadDepartmentData = function(){
+      console.log('not yet implemented loadDepartmentData');
+      $scope.departmentButtonText = "Department Data LOADED";
+      $scope.departmentButtonColour = "button-balanced";
+    }
+    $scope.loadClinicalData = function(){
+      console.log('not yet implemented loadClinicalData');
+      $scope.clinicalButtonText = "Clinical Data LOADED";
+      $scope.clinicalButtonColour = "button-balanced";
     }
 
     $scope.goHome=function(){

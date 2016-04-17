@@ -119,7 +119,8 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.notestore','s
       views: {
         'handbook': {
           templateUrl: 'templates/settings.html',
-          controller: 'SettingsController'
+          controller: 'SettingsController',
+          cached: false
         }
       }
     })

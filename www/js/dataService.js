@@ -24,7 +24,7 @@ angular.module('starter.dataService', [])
     getSettings:function(){
       // console.log('getting settings');
       var settingsObj = {
-            root:"no root address submitted",
+            root:"",
            clinical:"js/clinical.json",
            department:"js/department.json"
        };
@@ -45,6 +45,9 @@ angular.module('starter.dataService', [])
         }
         if(newSettings.department){
           storedSettings.department = newSettings.department;
+        }
+        if(newSettings.root){
+          storedSettings.root = newSettings.root;
         }
         $localstorage.setObject("settings",storedSettings);
         this.makeURL();

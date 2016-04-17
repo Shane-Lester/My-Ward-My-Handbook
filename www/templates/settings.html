@@ -1,31 +1,35 @@
 <ion-view view-title="Settings">
   <ion-content>
-    <form ng-submit="getWebData(settings,'department')">
+    <form ng-submit="setRoot(root)">
+      <div class = "row">Root address for loading data:</div>
         <div class="list">
           <label class="item item-input">
               http://www.
-              <input type="text" placeholder="Department data address?" ng-model="settings.department">
-              /docs/department.json
+              <input type="text" placeholder="root data address?" ng-model="root">
+              /docs
           </label>
         </div>
         <div class="padding">
-          <button type="submit" class="button button-block button-positive">Set Department address</button>
+          <button id = "rootButton" type="submit" class="button button-block {{buttonColour}}">{{rootText}}</button>
         </div>
-
       </form>
 
-      <form ng-submit="getWebData(settings,'clinical')">
-        <div class="list">
-          <label class="item item-input">
-              http://www.
-              <input type="text" placeholder="Clinical data address?" ng-model="settings.clinical">
-              /docs/clinical.json
-          </label>
+        <div class = "row">Department Data:</div>
+        <div class="row">
+              http://www.{{root}}/docs/department.json
         </div>
         <div class="padding">
-          <button type="submit" class="button button-block button-positive">Set Clinical address</button>
+          <button type="button" class="button button-block {{departmentButtonColour}}" ng-click = "loadDepartmentData()">{{departmentButtonText}}</button>
         </div>
-      </form>
+
+
+        <div class = "row">Department Data:</div>
+        <div class="row">
+              http://www.{{root}}/docs/department.json
+        </div>
+        <div class="padding">
+          <button type= "button" class="button button-block {{clinicalButtonColour}}" ng-click = "loadClinicalData()">{{clinicalButtonText}}</button>
+        </div>
 
 
       <div class="padding">
