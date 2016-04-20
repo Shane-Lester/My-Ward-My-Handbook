@@ -164,11 +164,11 @@ function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data
       $scope.clinicalButtonText = "Load Clinical Data";
   });
 
-    $scope.setRoot = function(root){
+    $scope.setRoot = function(root, specialty){
       var newData =Data.getSettings();
       if(root.length>0 && root.indexOf('www') == -1){
         //ensure root isn't empty and doesnt' start with www
-        root = "http://www." + root + "/docs";
+        root = "http://www." + root + "/" + specialty + "/docs";
         newData.root = root;
         newData.clinical = root + "/clinical.json";
         newData.department = root + "/department.json";
