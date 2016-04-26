@@ -104,7 +104,7 @@ angular.module('starter.controllers', [])
       //blank at the moment to keep everything tidy
     }
 
-    $http.get($scope.clinicalURL)
+    $http.get($scope.clinicalURL,{cache:true})
         .success(function(data){
             if(data.clinical){
                 $scope.clinicals=data.clinical;
@@ -128,7 +128,7 @@ angular.module('starter.controllers', [])
                         })
         });
 
-    $http.get($scope.departmentURL)
+    $http.get($scope.departmentURL,{cache:true})
         .success(function(data){
             if (data.department){
                 $scope.department=data.department;
