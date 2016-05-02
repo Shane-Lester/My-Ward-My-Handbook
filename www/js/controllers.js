@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ListController',["$scope", "$http", "$state", "$stateParams","$localstorage","$ionicHistory","Data", function($scope, $http, $state, $stateParams,$localstorage,$ionicHistory,Data){
+.controller('ListController',["$scope", "$http", "$state", "$stateParams","$localstorage","$ionicHistory","Data",  function($scope, $http, $state, $stateParams,$localstorage,$ionicHistory,Data){
 
     $scope.data={
         hideImage: true,
@@ -155,41 +155,70 @@ angular.module('starter.controllers', [])
 }])
 
 .controller('SettingsController',
-["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data",
-function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data){
+["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data","$ionicLoading",
+function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data, $ionicLoading){
+  var newData;
     $scope.$on('$ionicView.enter', function(){
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
       $scope.rootText = "Set root web address";
       $scope.departmentButtonText = "Load Department Data";
       $scope.clinicalButtonText = "Load Clinical Data";
+      $scope.httpLabel = "http://www.";
+      newData =Data.getSettings();
+      if(newData){
+        $scope.root = newData.root;
+        $scope.httpLabel ="";//hide httpLabel when the root is created with www at the start
+      }
+
   });
 
     $scope.setRoot = function(root, specialty){
-      var newData =Data.getSettings();
-      if(root.length>0 && root.indexOf('www') == -1){
-        //ensure root isn't empty and doesnt' start with www
-        root = "http://www." + root + "/" + specialty + "/docs";
+      console.log("setRoot function");
+      if(!root || !specialty){
+        console.log('error');
+        return false;
+      }
+      if(root.indexOf('www') == -1){
+        //ensure root isn't empty and doesnt' start with www -so want to add www to it
+        console.log("setting root with www");
+        root = "http://www." + root ;
+      }
         newData.root = root;
-        newData.clinical = root + "/clinical.json";
-        newData.department = root + "/department.json";
+        newData.clinical = root + "/" +  specialty + "/docs" + "/clinical.json";
+        newData.department = root  + "/" + specialty + "/docs"+ "/department.json";
         Data.storeSettings(newData);
         $scope.buttonColour= "button-balanced";
         $scope.rootText = "ROOT SET!";
+        $scope.rootSet = true;
 
         return true;
       }
-      return false;
-    }
-
+    
     $scope.loadDepartmentData = function(){
       console.log('not yet implemented loadDepartmentData');
+      //set a loading spinner
+      //call the Data service to load the department
+      //receive the data as returned data and close the loading spinner
+      //either confirm that it has a department key or that there was an error
+      //if error set button to load again
+      $ionicLoading.show({
+        template:'Loading Department Data'
+      })
+
       $scope.departmentButtonText = "Department Data LOADED";
       $scope.departmentButtonColour = "button-balanced";
+      $ionicLoading.hide();
+
     }
     $scope.loadClinicalData = function(){
       console.log('not yet implemented loadClinicalData');
+      $ionicLoading.show({
+        template:'Loading Clinical Data'
+      })
+
       $scope.clinicalButtonText = "Clinical Data LOADED";
       $scope.clinicalButtonColour = "button-balanced";
+      $ionicLoading.hide();
     }
 
     $scope.goHome=function(){

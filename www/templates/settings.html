@@ -1,10 +1,10 @@
 <ion-view view-title="Settings">
   <ion-content>
-    <form ng-submit="setRoot(root, specialty)">
+    <div>
       <div class = "row">Root address for loading data:</div>
         <div class="list">
           <label class="item item-input">
-              http://www.
+              {{httpLabel}}
               <input type="text" placeholder="root data address?" ng-model="root" lowercased>
           </label>
             <div class= "row">
@@ -14,16 +14,16 @@
           </div>
         </div>
         <div class="padding">
-          <button id = "rootButton" type="submit" class="button button-block {{buttonColour}}">{{rootText}}</button>
+          <button id = "rootButton" type = "button" ng-click = "setRoot(root,specialty)" class="button button-block {{buttonColour}}">{{rootText}}</button>
         </div>
-      </form>
+      </div>
 
         <div class = "row">Department Data:</div>
         <div class="row">
               http://www.{{root}}/{{specialty}}/docs/department.json
         </div>
         <div class="padding">
-          <button type="button" class="button button-block {{departmentButtonColour}}" ng-click = "loadDepartmentData()">{{departmentButtonText}}</button>
+          <button type="button" class="button button-block {{departmentButtonColour}}" ng-click = "loadDepartmentData()" ng-show ="rootSet">{{departmentButtonText}}</button>
         </div>
 
 
@@ -32,7 +32,7 @@
               http://www.{{root}}/{{specialty}}/docs/clinical.json
         </div>
         <div class="padding">
-          <button type= "button" class="button button-block {{clinicalButtonColour}}" ng-click = "loadClinicalData()">{{clinicalButtonText}}</button>
+          <button type= "button" class="button button-block {{clinicalButtonColour}}" ng-click = "loadClinicalData()" ng-show ="rootSet">{{clinicalButtonText}}</button>
         </div>
 
 
