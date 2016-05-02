@@ -3,31 +3,28 @@ angular.module('starter.dataService', [])
 
 .factory('Data',['$localstorage','$http',function($localstorage, $http){
   var storedSettings ={};// private variable that tracks the stored settings
-
-
-
+  var loadedClinicalData = {};
+  var loadedDepartmentData = {};
+  var settingsObj = {
+        root:"",
+       clinical:"js/clinical.json",
+       department:"js/department.json"
+   };
 
   return{
     initialize:function(){
-      //initialise clinical and department data caches
-      if(!clinicalCache || clinicalCache.clinical == "undefined"){
-        var clinicalCache = {"clinical":{}};
-        this.getSettings();
-        clinicalCache = this.getClinicalSettings();
-      }
-      if(!departmentCache || departmentCache.department == "undefined"){
-        var departmentCache = {"clinical":{}};
-        this.getSettings();
-        clinicalCache = this.getDepartmentSettings();
-      }
+      console.log('initializing');
+      this.getSettings();
+      // console.log(storedSettings);
+      this.loadClinicalData(storedSettings.clinical);
+      // console.log(storedSettings.clinical);
+      this.loadDepartmentData(storedSettings.department);
+      // console.log(storedSettings.department);
+
     },
     getSettings:function(){
       // console.log('getting settings');
-      var settingsObj = {
-            root:"",
-           clinical:"js/clinical.json",
-           department:"js/department.json"
-       };
+
      storedSettings = $localstorage.getObject('settings');
 
     if(!(storedSettings.clinical || storedSettings.admin)){
@@ -49,24 +46,55 @@ angular.module('starter.dataService', [])
         if(newSettings.root){
           storedSettings.root = newSettings.root;
         }
+        if(newSettings.specialty){
+          storedSettings.specialty = newSettings.specialty;
+        }
         $localstorage.setObject("settings",storedSettings);
         this.makeURL();
       },
 
-      getClinicalSettings:function(){},
-
-      getDepartmentSettings: function(){},
-
-      getData: function(type){
-        // function to retrieve data and send to controllers
-        // returns  a promise
-        // takes either settings or department as parameter string
-        // create the
-        // console.log('created address' +storedSettings[type]);
-
-        return $http.get(storedSettings[type]);
-
+      getClinicalSettings:function(){
+        return storedSettings.clinical;
       },
+
+      getDepartmentSettings: function(){
+        return storedSettings.department;
+      },
+
+      loadClinicalData: function(clinicalURL){
+        return $http.get(clinicalURL,{cache:true})
+            .then(function(data){
+              loadedClinicalData = data.data;
+              // console.log(loadedClinicalData);
+                return data.data;
+                  },
+            function(error){
+                    console.log('load failed');
+                    return false;
+            });
+      },
+
+      loadDepartmentData: function(departmentURL){
+        return $http.get(departmentURL,{cache:true})
+            .then(function(data){
+              loadedDepartmentData = data.data;
+              // console.log(loadedDepartmentData);
+                return data.data;
+                  },
+            function(error){
+                    console.log('load failed');
+                    return false;
+            });
+      },
+
+      getDepartmentData: function(){
+        return loadedDepartmentData;
+      },
+
+      getClinicalData: function(){
+        return loadedClinicalData;
+      },
+
       makeURL: function(){
         //need to edit the function to pass the made URL's back
         var URLObject=$localstorage.getObject('settings');

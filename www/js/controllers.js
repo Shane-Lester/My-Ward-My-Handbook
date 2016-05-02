@@ -42,196 +42,246 @@ angular.module('starter.controllers', [])
 })
 
 
-.controller('TodoListController',["$scope","NoteStore",function($scope,NoteStore){
+.controller('TodoListController', ["$scope", "NoteStore", function($scope, NoteStore) {
 
 
-    $scope.notes= NoteStore.list();
+  $scope.notes = NoteStore.list();
 
-    $scope.remove = function(noteId){
-      NoteStore.remove(noteId);
-    };
-
-}])
-
-.controller('EditListController',["$scope", "NoteStore", "$state", "$stateParams", function($scope,NoteStore, $state, $stateParams){
-
-
-    var ID=$stateParams.noteId;
-    $scope.note = angular.copy(NoteStore.get(ID));
-
-    $scope.save =function(){
-        NoteStore.update($scope.note);
-        $state.go('app.todolist')
-    };
-
+  $scope.remove = function(noteId) {
+    NoteStore.remove(noteId);
+  };
 
 }])
 
-.controller('AddListController',["$scope", "$state", "NoteStore", function($scope, $state , NoteStore){
-    $scope.note = {
-        id: new Date().getTime().toString(),
-        title: '',
-        description: ''
-        };
+.controller('EditListController', ["$scope", "NoteStore", "$state", "$stateParams", function($scope, NoteStore, $state, $stateParams) {
 
-    $scope.save =function(){
-        NoteStore.create($scope.note);
-        $state.go('app.todolist')
-    };
+
+  var ID = $stateParams.noteId;
+  $scope.note = angular.copy(NoteStore.get(ID));
+
+  $scope.save = function() {
+    NoteStore.update($scope.note);
+    $state.go('app.todolist')
+  };
+
+
+}])
+
+.controller('AddListController', ["$scope", "$state", "NoteStore", function($scope, $state, NoteStore) {
+  $scope.note = {
+    id: new Date().getTime().toString(),
+    title: '',
+    description: ''
+  };
+
+  $scope.save = function() {
+    NoteStore.create($scope.note);
+    $state.go('app.todolist')
+  };
 }])
 
 
 
-.controller('ListController',["$scope", "$http", "$state", "$stateParams","$localstorage","$ionicHistory","Data",  function($scope, $http, $state, $stateParams,$localstorage,$ionicHistory,Data){
+.controller('ListController', ["$scope", "$http", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", function($scope, $http, $state, $stateParams, $localstorage, $ionicHistory, Data) {
 
-    $scope.data={
-        hideImage: true,
-        showReorder: false
-    }
-    Data.initialize();
+  $scope.data = {
+    hideImage: true,
+    showReorder: false
+  }
+  var loadedClinicalData;
+  var loadedDepartmentData;
 
-    console.log(Data.getSettings());
+  $scope.makeURL = function() {
+    console.log('making URL');
+    var URLObject = Data.makeURL();
+    $scope.clinicalURL = URLObject.clinical;
+    $scope.departmentURL = URLObject.department;
+    $localstorage.setObject('settings', URLObject);
+  }
 
-    $scope.makeURL=function(){
-        var URLObject=Data.makeURL();
-        $scope.clinicalURL= URLObject.clinical;
-        $scope.departmentURL= URLObject.department;
-        $localstorage.setObject('settings',URLObject);
-            }
+  $scope.resetDefaultData = function() {
+    //blank at the moment to keep everything tidy
+  }
 
-    $scope.makeURL();
-    $scope.resetDefaultData = function(){
-      //blank at the moment to keep everything tidy
-    }
+  Data.initialize(); //should load defaults
+  $scope.makeURL();
+  loadedClinicalData = Data.getClinicalData();
+  if (loadedClinicalData.clinical) {
+    //only add it to the scope if there is a clinical key, otherwise carry on with the same data
+    $scope.clinicals = loadedClinicalData.clinical;
+  }
+  loadedDepartmentData = Data.getDepartmentData();
+  if (loadedDepartmentData.department) {
+    //same as for clinical
+    $scope.department = loadedDepartmentData.department;
+  }
+  $scope.whichCondition = $stateParams.aId;
 
-    $http.get($scope.clinicalURL,{cache:true})
-        .success(function(data){
-            if(data.clinical){
-                $scope.clinicals=data.clinical;
-                }
-            //if no clinical key then load default
-            else{
-                console.log('no clinical key');
-                $scope.resetDefaultData('clinical');
-                $ionicHistory.clearCache().then(function(){
+  //
+  // $http.get($scope.clinicalURL, {
+  //     cache: true
+  //   })
+  //   .success(function(data) {
+  //     if (data.clinical) {
+  //       $scope.clinicals = data.clinical;
+  //     }
+  //     //if no clinical key then load default
+  //     else {
+  //       console.log('no clinical key');
+  //       $scope.resetDefaultData('clinical');
+  //       $ionicHistory.clearCache().then(function() {
+  //
+  //         $state.go('app.home', {}, {
+  //           reload: true
+  //         });
+  //       })
+  //     }
+  //   })
+  //   .error(function(data) {
+  //     console.log('load failed');
+  //     $scope.resetDefaultData('clinical');
+  //     $ionicHistory.clearCache().then(function() {
+  //
+  //       $state.go('app.home', {}, {
+  //         reload: true
+  //       });
+  //     })
+  //   });
+  //
+  // $http.get($scope.departmentURL, {
+  //     cache: true
+  //   })
+  //   .success(function(data) {
+  //     if (data.department) {
+  //       $scope.department = data.department;
+  //     }
+  //     //if no department key then load default
+  //     else {
+  //       $scope.resetDefaultData('department');
+  //       $ionicHistory.clearCache().then(function() {
+  //
+  //         $state.go('app.home', {}, {
+  //           reload: true
+  //         });
+  //       })
+  //     }
+  //   })
+  //   .error(function(data) {
+  //     console.log('dept load failed');
+  //     $scope.resetDefaultData('department');
+  //     $ionicHistory.clearCache().then(function() {
+  //
+  //       $state.go('app.home', {}, {
+  //         reload: true
+  //       });
+  //     })
+  //   });
 
-                      $state.go('app.home',{},{reload:true});
-                        })
-                    }
-              })
-        .error(function(data){
-                console.log('load failed');
-                $scope.resetDefaultData('clinical');
-                $ionicHistory.clearCache().then(function(){
-
-                      $state.go('app.home',{},{reload:true});
-                        })
-        });
-
-    $http.get($scope.departmentURL,{cache:true})
-        .success(function(data){
-            if (data.department){
-                $scope.department=data.department;
-                }
-                    //if no department key then load default
-            else{
-                $scope.resetDefaultData('department');
-                $ionicHistory.clearCache().then(function(){
-
-                      $state.go('app.home',{},{reload:true});
-                        })
-                    }
-        })
-        .error(function(data){
-                console.log('dept load failed');
-                $scope.resetDefaultData('department');
-                $ionicHistory.clearCache().then(function(){
-
-                      $state.go('app.home',{},{reload:true});
-                        })
-        });
-
-        $scope.whichCondition=$stateParams.aId;
 }])
 
-.controller('SettingsController',
-["$scope", "NoteStore", "$state", "$stateParams","$localstorage","$ionicHistory", "Data","$ionicLoading",
-function($scope,NoteStore, $state, $stateParams,$localstorage,$ionicHistory,Data, $ionicLoading){
-  var newData;
-    $scope.$on('$ionicView.enter', function(){
+.controller('SettingsController', ["$scope", "NoteStore", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", "$ionicLoading", "$ionicHistory",
+  function($scope, NoteStore, $state, $stateParams, $localstorage, $ionicHistory, Data, $ionicLoading, $ionicHistory) {
+    var newData;
+    $scope.$on('$ionicView.enter', function() {
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
       $scope.rootText = "Set root web address";
       $scope.departmentButtonText = "Load Department Data";
       $scope.clinicalButtonText = "Load Clinical Data";
       $scope.httpLabel = "http://www.";
-      newData =Data.getSettings();
-      if(newData){
+      newData = Data.getSettings();
+      if (newData) {
         $scope.root = newData.root;
-        $scope.httpLabel ="";//hide httpLabel when the root is created with www at the start
+        $scope.specialty = newData.specialty;
+        if (newData.root && newData.root.indexOf('www') > -1) {
+          $scope.httpLabel = ""; //hide httpLabel when the root is created with www at the start
+        }
       }
 
-  });
+    });
 
-    $scope.setRoot = function(root, specialty){
+
+    $scope.setRoot = function(root, specialty) {
       console.log("setRoot function");
-      if(!root || !specialty){
+      if (!root || !specialty) {
         console.log('error');
         return false;
       }
-      if(root.indexOf('www') == -1){
+      if (root.indexOf('www') == -1) {
         //ensure root isn't empty and doesnt' start with www -so want to add www to it
         console.log("setting root with www");
-        root = "http://www." + root ;
+        root = "http://www." + root;
+        $scope.httpLabel = "";
       }
-        newData.root = root;
-        newData.clinical = root + "/" +  specialty + "/docs" + "/clinical.json";
-        newData.department = root  + "/" + specialty + "/docs"+ "/department.json";
-        Data.storeSettings(newData);
-        $scope.buttonColour= "button-balanced";
-        $scope.rootText = "ROOT SET!";
-        $scope.rootSet = true;
+      newData.root = root;
+      newData.specialty = specialty;
+      newData.clinical = root + "/" + specialty + "/docs" + "/clinical.json";
+      newData.department = root + "/" + specialty + "/docs" + "/department.json";
+      Data.storeSettings(newData);
+      $scope.buttonColour = "button-balanced";
+      $scope.rootText = "ROOT SET!";
+      $scope.departmentButtonText = "Load Department Data";
+      $scope.departmentButtonColour = 'button-positive';
+      $scope.clinicalButtonColour = 'button-positive';
+      $scope.clinicalButtonText = "Load Clinical Data";
+      $scope.rootSet = true;
 
-        return true;
-      }
-    
-    $scope.loadDepartmentData = function(){
-      console.log('not yet implemented loadDepartmentData');
-      //set a loading spinner
-      //call the Data service to load the department
-      //receive the data as returned data and close the loading spinner
-      //either confirm that it has a department key or that there was an error
-      //if error set button to load again
-      $ionicLoading.show({
-        template:'Loading Department Data'
-      })
-
-      $scope.departmentButtonText = "Department Data LOADED";
-      $scope.departmentButtonColour = "button-balanced";
-      $ionicLoading.hide();
-
+      return true;
     }
-    $scope.loadClinicalData = function(){
+
+    $scope.loadDepartmentData = function() {
+      console.log('not yet implemented loadDepartmentData');
+      $ionicLoading.show({
+        template: 'Loading Department Data'
+      });
+      departmentURL = Data.getDepartmentSettings();
+      Data.loadDepartmentData(departmentURL).then(function(data) {
+        if (data.department) {
+          $scope.departmentButtonText = "Department Data LOADED";
+          $scope.departmentButtonColour = "button-balanced";
+        }
+
+
+        if (data == false) {
+          console.log("error");
+          $scope.departmentButtonText = "Department Data FAILED";
+          $scope.departmentButtonColour = "button-assertive";
+        }
+        $ionicLoading.hide();
+      });
+    };
+
+    $scope.loadClinicalData = function() {
       console.log('not yet implemented loadClinicalData');
       $ionicLoading.show({
-        template:'Loading Clinical Data'
-      })
-
-      $scope.clinicalButtonText = "Clinical Data LOADED";
-      $scope.clinicalButtonColour = "button-balanced";
-      $ionicLoading.hide();
+        template: 'Loading Clinical Data'
+      });
+      clinicalURL = Data.getClinicalSettings();
+      Data.loadClinicalData(clinicalURL).then(function(data) {
+        if (data.clinical) {
+          $scope.clinicalButtonText = "Clinical Data LOADED";
+          $scope.clinicalButtonColour = "button-balanced";
+        }
+        if (data == false) {
+          console.log('error');
+          $scope.clinicalButtonText = "Department Data FAILED";
+          $scope.clinicalButtonColour = "button-assertive";
+        }
+        $ionicLoading.hide();
+      });
     }
 
-    $scope.goHome=function(){
-       $ionicHistory.nextViewOptions({
-            disableBack: true
-        });
-        $ionicHistory.clearCache().then(
-            function(){
-                $state.go('app.home');
-            }
-        )
+    $scope.goHome = function() {
+      $ionicHistory.nextViewOptions({
+        disableBack: true
+      });
+      $ionicHistory.clearCache().then(
+        function() {
+          $state.go('app.home');
+        }
+      )
 
     }
 
 
-}]);
+  }
+]);
