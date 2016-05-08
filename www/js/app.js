@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers','starter.notestore','starter.services','starter.dataService'])
 
-.run(function($ionicPlatform,$rootScope,$localstorage) {
+.run(function($ionicPlatform,$rootScope,$localstorage, Data) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,7 @@ angular.module('starter', ['ionic', 'starter.controllers','starter.notestore','s
       // org.apache.cordova.statusbar required
       StatusBar.styleDefault();
     }
+    Data.initialize();
   });
 })
 

@@ -91,20 +91,6 @@ angular.module('starter.controllers', [])
   var loadedClinicalData;
   var loadedDepartmentData;
 
-  $scope.makeURL = function() {
-    console.log('making URL');
-    var URLObject = Data.makeURL();
-    $scope.clinicalURL = URLObject.clinical;
-    $scope.departmentURL = URLObject.department;
-    $localstorage.setObject('settings', URLObject);
-  }
-
-  $scope.resetDefaultData = function() {
-    //blank at the moment to keep everything tidy
-  }
-
-  Data.initialize(); //should load defaults
-  $scope.makeURL();
   loadedClinicalData = Data.getClinicalData();
   if (loadedClinicalData.clinical) {
     //only add it to the scope if there is a clinical key, otherwise carry on with the same data
@@ -117,71 +103,12 @@ angular.module('starter.controllers', [])
   }
   $scope.whichCondition = $stateParams.aId;
 
-  //
-  // $http.get($scope.clinicalURL, {
-  //     cache: true
-  //   })
-  //   .success(function(data) {
-  //     if (data.clinical) {
-  //       $scope.clinicals = data.clinical;
-  //     }
-  //     //if no clinical key then load default
-  //     else {
-  //       console.log('no clinical key');
-  //       $scope.resetDefaultData('clinical');
-  //       $ionicHistory.clearCache().then(function() {
-  //
-  //         $state.go('app.home', {}, {
-  //           reload: true
-  //         });
-  //       })
-  //     }
-  //   })
-  //   .error(function(data) {
-  //     console.log('load failed');
-  //     $scope.resetDefaultData('clinical');
-  //     $ionicHistory.clearCache().then(function() {
-  //
-  //       $state.go('app.home', {}, {
-  //         reload: true
-  //       });
-  //     })
-  //   });
-  //
-  // $http.get($scope.departmentURL, {
-  //     cache: true
-  //   })
-  //   .success(function(data) {
-  //     if (data.department) {
-  //       $scope.department = data.department;
-  //     }
-  //     //if no department key then load default
-  //     else {
-  //       $scope.resetDefaultData('department');
-  //       $ionicHistory.clearCache().then(function() {
-  //
-  //         $state.go('app.home', {}, {
-  //           reload: true
-  //         });
-  //       })
-  //     }
-  //   })
-  //   .error(function(data) {
-  //     console.log('dept load failed');
-  //     $scope.resetDefaultData('department');
-  //     $ionicHistory.clearCache().then(function() {
-  //
-  //       $state.go('app.home', {}, {
-  //         reload: true
-  //       });
-  //     })
-  //   });
-
 }])
 
 .controller('SettingsController', ["$scope", "NoteStore", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", "$ionicLoading", "$ionicHistory",
   function($scope, NoteStore, $state, $stateParams, $localstorage, $ionicHistory, Data, $ionicLoading, $ionicHistory) {
     var newData;
+    $scope.cached = {now:true};
     $scope.$on('$ionicView.enter', function() {
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
       $scope.rootText = "Set root web address";
@@ -190,8 +117,8 @@ angular.module('starter.controllers', [])
       $scope.httpLabel = "http://www.";
       newData = Data.getSettings();
       if (newData) {
-        $scope.root = newData.root;
-        $scope.specialty = newData.specialty;
+        root = $scope.root = newData.root;
+        specialty = $scope.specialty = newData.specialty;
         if (newData.root && newData.root.indexOf('www') > -1) {
           $scope.httpLabel = ""; //hide httpLabel when the root is created with www at the start
         }
@@ -206,7 +133,7 @@ angular.module('starter.controllers', [])
         console.log('error');
         return false;
       }
-      if (root.indexOf('www') == -1) {
+      if (root.indexOf('www') == -1 && root != "js") {
         //ensure root isn't empty and doesnt' start with www -so want to add www to it
         console.log("setting root with www");
         root = "http://www." + root;
@@ -214,8 +141,6 @@ angular.module('starter.controllers', [])
       }
       newData.root = root;
       newData.specialty = specialty;
-      newData.clinical = root + "/" + specialty + "/docs" + "/clinical.json";
-      newData.department = root + "/" + specialty + "/docs" + "/department.json";
       Data.storeSettings(newData);
       $scope.buttonColour = "button-balanced";
       $scope.rootText = "ROOT SET!";
@@ -229,13 +154,17 @@ angular.module('starter.controllers', [])
     }
 
     $scope.loadDepartmentData = function() {
-      console.log('not yet implemented loadDepartmentData');
+      newData = Data.getSettings();
+      if (!newData || !newData.root || !newData.specialty){
+        return
+      }
+      newData.department = newData.root + "/" + newData.specialty + "/docs" + "/department.json";
       $ionicLoading.show({
         template: 'Loading Department Data'
       });
-      departmentURL = Data.getDepartmentSettings();
-      Data.loadDepartmentData(departmentURL).then(function(data) {
+      Data.loadDepartmentData(newData.department, $scope.cached.now).then(function(data) {
         if (data.department) {
+          Data.storeSettings(newData);
           $scope.departmentButtonText = "Department Data LOADED";
           $scope.departmentButtonColour = "button-balanced";
         }
@@ -251,13 +180,17 @@ angular.module('starter.controllers', [])
     };
 
     $scope.loadClinicalData = function() {
-      console.log('not yet implemented loadClinicalData');
+      newData = Data.getSettings();
+      if (!newData || !newData.root || !newData.specialty){
+        return
+      }
+      newData.clinical = newData.root + "/" + newData.specialty + "/docs" + "/clinical.json";
       $ionicLoading.show({
         template: 'Loading Clinical Data'
       });
-      clinicalURL = Data.getClinicalSettings();
-      Data.loadClinicalData(clinicalURL).then(function(data) {
+      Data.loadClinicalData(newData.clinical, $scope.cached.now).then(function(data) {
         if (data.clinical) {
+          Data.storeSettings(newData);
           $scope.clinicalButtonText = "Clinical Data LOADED";
           $scope.clinicalButtonColour = "button-balanced";
         }

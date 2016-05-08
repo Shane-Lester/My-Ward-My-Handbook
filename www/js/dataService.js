@@ -5,6 +5,7 @@ angular.module('starter.dataService', [])
   var storedSettings ={};// private variable that tracks the stored settings
   var loadedClinicalData = {};
   var loadedDepartmentData = {};
+  var addition  ='';
   var settingsObj = {
         root:"",
        clinical:"js/clinical.json",
@@ -61,8 +62,11 @@ angular.module('starter.dataService', [])
         return storedSettings.department;
       },
 
-      loadClinicalData: function(clinicalURL){
-        return $http.get(clinicalURL,{cache:true})
+      loadClinicalData: function(clinicalURL,isCached){
+        if(isCached == false){
+          addition = '?' + new Date;
+        }
+        return $http.get(clinicalURL + addition,{cache:isCached})
             .then(function(data){
               loadedClinicalData = data.data;
               // console.log(loadedClinicalData);
@@ -74,8 +78,12 @@ angular.module('starter.dataService', [])
             });
       },
 
-      loadDepartmentData: function(departmentURL){
-        return $http.get(departmentURL,{cache:true})
+      loadDepartmentData: function(departmentURL,isCached){
+        if(isCached == false){
+          console.log('not caching');
+          addition = '?' + new Date;
+        }
+        return $http.get(departmentURL + addition,{cache:isCached})
             .then(function(data){
               loadedDepartmentData = data.data;
               // console.log(loadedDepartmentData);
