@@ -67,10 +67,11 @@ angular.module('starter.dataService', [])
           addition = '?' + new Date;
         }
         return $http.get(clinicalURL + addition,{cache:isCached})
-            .then(function(data){
-              loadedClinicalData = data.data;
+            .then(function(response){
+              loadedClinicalData = response.data;
               // console.log(loadedClinicalData);
-                return data.data;
+              addition = "";
+                return response.data;
                   },
             function(error){
                     console.log('load failed');
@@ -80,14 +81,15 @@ angular.module('starter.dataService', [])
 
       loadDepartmentData: function(departmentURL,isCached){
         if(isCached == false){
-          console.log('not caching');
+          // console.log('not caching');
           addition = '?' + new Date;
         }
         return $http.get(departmentURL + addition,{cache:isCached})
-            .then(function(data){
-              loadedDepartmentData = data.data;
+            .then(function(response){
+              loadedDepartmentData = response.data;
               // console.log(loadedDepartmentData);
-                return data.data;
+              addition = "";
+                return response.data;
                   },
             function(error){
                     console.log('load failed');
