@@ -2,46 +2,46 @@
   <ion-content>
     <div>
       <div>
-        Use stored data?<input type = 'checkbox'  ng-model = "cached.now">
+        Use stored data?
+        <input type='checkbox' ng-model="cached.now">
       </div>
-      <div class = "row">Root address for loading data:</div>
-        <div class="list">
-          <label class="item item-input">
-              {{httpLabel}}
-              <input type="text" placeholder="root data address?" ng-model="root" lowercased>
-          </label>
-            <div class= "row">
-              Specialty:/ &nbsp
-              <input class = "padding" type = "text" placeholder="specialty" ng-model = "specialty" lowercased>
-              /docs
-          </div>
-        </div>
-        <div class="padding">
-          <button id = "rootButton" type = "button" ng-click = "setRoot(root,specialty)" class="button button-block {{buttonColour}}">{{rootText}}</button>
+      <div class="row ">Root address for loading data:</div>
+      <div class="list">
+        <label class="item item-input">
+          {{httpLabel}}
+          <input type="text" placeholder="root data address?" ng-model="root" lowercased>
+        </label>
+        <div class="row">
+          Specialty:/ &nbsp
+          <input class="padding" type="text" placeholder="specialty" ng-model="specialty" lowercased> /docs
         </div>
       </div>
-
-        <div class = "row">Department Data:</div>
-        <div class="row">
-              http://www.{{root}}/{{specialty}}/docs/department.json
-        </div>
-        <div class="padding">
-          <button type="button" class="button button-block {{departmentButtonColour}}" ng-click = "loadDepartmentData()" ng-show ="rootSet">{{departmentButtonText}}</button>
-        </div>
-
-
-        <div class = "row">Clinical Data:</div>
-        <div class="row">
-              http://www.{{root}}/{{specialty}}/docs/clinical.json
-        </div>
-        <div class="padding">
-          <button type= "button" class="button button-block {{clinicalButtonColour}}" ng-click = "loadClinicalData()" ng-show ="rootSet">{{clinicalButtonText}}</button>
-        </div>
-
-
       <div class="padding">
-          <button type="button" class="button button-block button-assertive" ng-click="goHome()">Home</button>
-        </div>
+        <button id="rootButton" type="button" ng-click="setRoot(root,specialty)" class="button button-block {{buttonColour}}">{{rootText}}</button>
+      </div>
+    </div>
+    <div ng-show ="rootIsSet">
+      <div class="row">Department Data:</div>
+      <div class="row">
+        http://www.{{root}}/{{specialty}}/docs/department.json
+      </div>
+      <div class="padding">
+        <button type="button" class="button button-block {{departmentButtonColour}}" ng-click="loadDepartmentData()" ng-show="rootSet">{{departmentButtonText}}</button>
+      </div>
+
+
+      <div class="row">Clinical Data:</div>
+      <div class="row">
+        http://www.{{root}}/{{specialty}}/docs/clinical.json
+      </div>
+      <div class="padding">
+        <button type="button" class="button button-block {{clinicalButtonColour}}" ng-click="loadClinicalData()" ng-show="rootSet">{{clinicalButtonText}}</button>
+      </div>
+
+    </div>
+    <div class="padding">
+      <button type="button" class="button button-block button-assertive" ng-click="goHome()">Home</button>
+    </div>
 
   </ion-content>
 </ion-view>

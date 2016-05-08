@@ -9,7 +9,8 @@ angular.module('starter.dataService', [])
   var settingsObj = {
         root:"",
        clinical:"js/clinical.json",
-       department:"js/department.json"
+       department:"js/department.json",
+       cacheKey:"?0"
    };
 
   return{
@@ -50,8 +51,11 @@ angular.module('starter.dataService', [])
         if(newSettings.specialty){
           storedSettings.specialty = newSettings.specialty;
         }
+        if(newSettings.cacheKey){
+          storedSettings.cacheKey = newSettings.cacheKey;
+        }
         $localstorage.setObject("settings",storedSettings);
-        this.makeURL();
+        // this.makeURL(); let's try not doing this.
       },
 
       getClinicalSettings:function(){
@@ -62,11 +66,8 @@ angular.module('starter.dataService', [])
         return storedSettings.department;
       },
 
-      loadClinicalData: function(clinicalURL,isCached){
-        if(isCached == false){
-          addition = '?' + new Date;
-        }
-        return $http.get(clinicalURL + addition,{cache:isCached})
+      loadClinicalData: function(clinicalURL){
+        return $http.get(clinicalURL + storedSettings.cacheKey,{cache:true})
             .then(function(response){
               loadedClinicalData = response.data;
               // console.log(loadedClinicalData);
@@ -79,12 +80,9 @@ angular.module('starter.dataService', [])
             });
       },
 
-      loadDepartmentData: function(departmentURL,isCached){
-        if(isCached == false){
-          // console.log('not caching');
-          addition = '?' + new Date;
-        }
-        return $http.get(departmentURL + addition,{cache:isCached})
+      loadDepartmentData: function(departmentURL){
+
+        return $http.get(departmentURL + storedSettings.cacheKey,{cache:true})
             .then(function(response){
               loadedDepartmentData = response.data;
               // console.log(loadedDepartmentData);

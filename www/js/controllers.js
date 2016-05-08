@@ -1,46 +1,5 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
-
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-})
-
 
 .controller('TodoListController', ["$scope", "NoteStore", function($scope, NoteStore) {
 
@@ -82,7 +41,7 @@ angular.module('starter.controllers', [])
 
 
 
-.controller('ListController', ["$scope", "$http", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", function($scope, $http, $state, $stateParams, $localstorage, $ionicHistory, Data) {
+.controller('ListController', ["$scope",  "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", function($scope, $state, $stateParams, $localstorage, $ionicHistory, Data) {
 
   $scope.data = {
     hideImage: true,
@@ -108,8 +67,10 @@ angular.module('starter.controllers', [])
 .controller('SettingsController', ["$scope", "NoteStore", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", "$ionicLoading", "$ionicHistory",
   function($scope, NoteStore, $state, $stateParams, $localstorage, $ionicHistory, Data, $ionicLoading, $ionicHistory) {
     var newData;
+
     $scope.cached = {now:true};
     $scope.$on('$ionicView.enter', function() {
+      $scope.rootIsSet = false;
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
       $scope.rootText = "Set root web address";
       $scope.departmentButtonText = "Load Department Data";
@@ -139,7 +100,12 @@ angular.module('starter.controllers', [])
         root = "http://www." + root;
         $scope.httpLabel = "";
       }
+      $scope.rootIsSet = true;
       newData.root = root;
+      if(!$scope.cached.now){
+        console.log('making new cache key');
+        newData.cacheKey = "?" + Date.now();
+      }
       newData.specialty = specialty;
       Data.storeSettings(newData);
       $scope.buttonColour = "button-balanced";
@@ -162,7 +128,7 @@ angular.module('starter.controllers', [])
       $ionicLoading.show({
         template: 'Loading Department Data'
       });
-      Data.loadDepartmentData(newData.department, $scope.cached.now).then(function(data) {
+      Data.loadDepartmentData(newData.department).then(function(data) {
         if (data.department) {
           Data.storeSettings(newData);
           $scope.departmentButtonText = "Department Data LOADED";
@@ -188,7 +154,7 @@ angular.module('starter.controllers', [])
       $ionicLoading.show({
         template: 'Loading Clinical Data'
       });
-      Data.loadClinicalData(newData.clinical, $scope.cached.now).then(function(data) {
+      Data.loadClinicalData(newData.clinical).then(function(data) {
         if (data.clinical) {
           Data.storeSettings(newData);
           $scope.clinicalButtonText = "Clinical Data LOADED";
