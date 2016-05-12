@@ -12,7 +12,7 @@
 
                 <h1 ng-bind-html ="clinical.title" ></h1>
 
-                <h2 ng-show=!clinical.image ng-bind-html ="clinical.summary"></h2><ng-show=!clinical.image hr/>
+                <h2 ng-show="!clinical.image" ng-bind-html ="clinical.summary"></h2><ng-show=!clinical.image hr/>
 
                 <h3 ng-show=!clinical.image>Clinical Symptoms</h3>
                 <h2 ng-show=!clinical.image ng-bind-html ="clinical.symptoms"></h2><ng-show=!clinical.image hr/>
@@ -28,9 +28,8 @@
 
                 <h3  ng-show=!clinical.image >Red Flags</h3>
                 <h2  ng-show=!clinical.image ng-bind-html ="clinical.flags"></h2>
-<!--                if there is an image attribute then show the laryngectomy pathway-->
-                <div ng-show=clinical.image ng-repeat = "image in clinical.src">
-                  <img  class="path"  ng-src="{{image}}"/>
+                <div ng-show="clinical.image" ng-repeat = "image in clinical.src">
+                  <img class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}">
                 </div>
 
             </ion-item>

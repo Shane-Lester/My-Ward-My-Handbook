@@ -117,6 +117,11 @@
              "required":"Full history and clerking<br/> Side it started, duration, provoking factors<br/> PMH:hypertension, cardiac (stents (what type, when it was inserted), prosthetic heart valves (which valve, metallic/tissue)), liver disease<br/> DH: anticoagulants/antiplatelets<br/> SH: alcohol intake, drug use<br/> Examine nose for origin of bleeding<br/> Silver nitrate cautery –one side only<br/> Insertion of nasal pack if unable to see site of bleeding and active bleeding not settling with simple measures. Insert smallest pack necessary to arrest bleeding +/- posterior packing if required<br/> If admitting patient<br/> FBC, U&E, Coag/INR, G&S (if transferred from another hospital G&S must be repeated when arrive)<br/> IV access<br/> Withhold warfarin if INR above therapeutic ratio<br/> If patient being discharged from A&E/cas clinic/ward<br/> First aid advice (pinch tip of nose for 10 mins>10 mins>A&E if still bleeding, frozen peas to forehead, tip head forward)<br/> Avoid stooping, straining, heavy lifting, no nose blowing, sneeze with mouth open, avoid hot foods/drinks/showers for few days<br/> Give naseptin cream (check no allergy to peanuts)<br/> apply binasally, BD for 2 weeks.",
              "flags":"Unilateral “nasal polyps” with associated epistaxis beware of malignancy-polyps don’t ususally bleed<br/> Recurrent unilateral epistaxis-make sure patient has thorough nasoendoscopy when bleeding settled to exclude malignancy."
                 },
+                {"title": "Epistaxis protocol",
+             "image":true,
+             "src":["epistaxis.jpg"]
+
+            },
             {"title":"Bells Palsy",
              "summary":"LMN facial nerve palsy<br/> diagnosis of exclusion.",
              "symptoms":"LMN facial weakness<br/> May have short history of preceding otalgia<br/> Ensure you ask about history of trauma/ear symtoms.",
@@ -127,7 +132,7 @@
                 },
             {"title": "Laryngectomy Valve Pathway",
              "image":true,
-             "src":["img/page1.jpg","img/page2.jpg","img/page3.jpg","img/page4.jpg"]
+             "src":["page1.jpg","page2.jpg","page3.jpg","page4.jpg"]
 
             }
 

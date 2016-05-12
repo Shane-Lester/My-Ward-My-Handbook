@@ -13,18 +13,21 @@
                 <div ng-repeat="info in item.data">
 
 
-                    <h3 ng-hide=info.image>{{info.title}}</h3>
-                    <h2 ng-hide=info.image>{{info.subtitle}}</h2>
-                    <h3 ng-hide=info.image>{{info.heading}}</h3>
-                    <h2 ng-hide=info.image>{{info.subheading}}</h2>
-                    <p ng-hide=info.image>{{info.info1}}</p>
-                    <p ng-hide=info.image>{{info.info2}}</p>
-                    <h2 ng-hide=info.image><strong>{{info.bold}}</strong></h2>
-                    <h2 ng-hide=info.image><u>{{info.underline}}</u></h2>
-                    <h2 ng-hide=info.image>{{info.list}}</h2>
-                    <p ng-hide=info.image ng-bind-html="info.item"></p>
-                    <div ng-show=info.image ng-repeat = "image in info.src">
-                      <img  class="path"  ng-src="{{image}}"/>
+                    <h3 ng-hide="info.image">{{info.title}}</h3>
+                    <h2 ng-hide="info.image">{{info.subtitle}}</h2>
+                    <h3 ng-hide="info.image">{{info.heading}}</h3>
+                    <h2 ng-hide="info.image">{{info.subheading}}</h2>
+                    <p ng-hide="info.image">{{info.info1}}</p>
+                    <p ng-hide="info.image">{{info.info2}}</p>
+                    <h2 ng-hide="info.image"><strong>{{info.bold}}</strong></h2>
+                    <h2 ng-hide="info.image"><u>{{info.underline}}</u></h2>
+                    <h2 ng-hide="info.image">{{info.list}}</h2>
+                    <p ng-hide="info.image" ng-bind-html="info.item"></p>
+
+                    <div ng-show="info.image" ng-repeat = "image in info.src">
+                      <img  class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}"/>
+                    
+                    
                     </div>
 
                 </div>

@@ -47,8 +47,15 @@ angular.module('starter.controllers', [])
     hideImage: true,
     showReorder: false
   }
+
+  var settingsData = Data.getSettings();
+
   var loadedClinicalData;
   var loadedDepartmentData;
+
+
+  $scope.root = settingsData.root;
+  $scope.specialty = settingsData.specialty;
 
   loadedClinicalData = Data.getClinicalData();
   if (loadedClinicalData.clinical) {
