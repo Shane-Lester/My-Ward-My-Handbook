@@ -26,6 +26,7 @@
                 </div>
 
                 <div ng-show= 'isImage' ng-repeat = "image in item.data[1].src">
+                  <h2>{{item.data[2].text}}
 
                   <img  class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}"/>
                 </div>

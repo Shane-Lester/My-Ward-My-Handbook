@@ -11,26 +11,28 @@
                       ng-repeat="clinical in clinicals|filter: {title:whichCondition}" >
 
                 <h1 ng-bind-html ="clinical.title" ></h1>
+                <img ng-if = "!clinical.src" ng-src= "{{root}}/{{specialty}}/docs/images/{{clinical.image}}" width="100%">
 
-                <h2 ng-show="!clinical.image" ng-bind-html ="clinical.summary"></h2><ng-show=!clinical.image hr/>
+                <h2 ng-show="!clinical.src" ng-bind-html ="clinical.summary"></h2><ng-show=!clinical.src hr/>
 
-                <h3 ng-show=!clinical.image>Clinical Symptoms</h3>
-                <h2 ng-show=!clinical.image ng-bind-html ="clinical.symptoms"></h2><ng-show=!clinical.image hr/>
+                <h3 ng-show=!clinical.src>Clinical Symptoms</h3>
+                <h2 ng-show=!clinical.src ng-bind-html ="clinical.symptoms"></h2><ng-show=!clinical.src hr/>
 
-                <h3 ng-show=!clinical.image >Clinical Signs</h3>
-                 <h2 ng-show=!clinical.image ng-bind-html ="clinical.signs"></h2><ng-show=!clinical.image hr/>
+                <h3 ng-show=!clinical.src >Clinical Signs</h3>
+                 <h2 ng-show=!clinical.src ng-bind-html ="clinical.signs"></h2><ng-show=!clinical.src hr/>
 
-                <h3 ng-show=!clinical.image >When to admit</h3>
-                <h2  ng-show=!clinical.image ng-bind-html ="clinical.admit"></h2><ng-show=!clinical.image hr/>
+                <h3 ng-show=!clinical.src >When to admit</h3>
+                <h2  ng-show=!clinical.src ng-bind-html ="clinical.admit"></h2><ng-show=!clinical.src hr/>
 
-                <h3 ng-show=!clinical.image >Admission</h3>
-                <h2  ng-show=!clinical.image ng-bind-html ="clinical.required"></h2><ng-show=!clinical.image hr/>
+                <h3 ng-show=!clinical.src >Admission</h3>
+                <h2  ng-show=!clinical.src ng-bind-html ="clinical.required"></h2><ng-show=!clinical.src hr/>
 
-                <h3  ng-show=!clinical.image >Red Flags</h3>
-                <h2  ng-show=!clinical.image ng-bind-html ="clinical.flags"></h2>
-                <div ng-show="clinical.image" ng-repeat = "image in clinical.src">
+                <h3  ng-show=!clinical.src >Red Flags</h3>
+                <h2  ng-show=!clinical.src ng-bind-html ="clinical.flags"></h2>
+                <div ng-show="clinical.src" ng-repeat = "image in clinical.src track by $index">
+                  <h2 ng-bind-html = "clinical.text[$index]"></h2>
                   <img class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}">
-                </div>
+              </div>
 
             </ion-item>
         </ion-list>
