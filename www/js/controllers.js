@@ -76,6 +76,7 @@ angular.module('starter.controllers', [])
     var newData;
 
     $scope.$on('$ionicView.enter', function() {
+
       $scope.cached = {now:true};
       $scope.rootIsSet = false;
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
@@ -84,8 +85,13 @@ angular.module('starter.controllers', [])
       $scope.clinicalButtonText = "Load Clinical Data";
       $scope.httpLabel = "http://www.";
       newData = Data.getSettings();
+
       if (newData) {
+        if(newData.root =='js'){
+          newData.root ='';
+        }
         root = $scope.root = newData.root;
+
         specialty = $scope.specialty = newData.specialty;
         if (newData.root && newData.root.indexOf('www') > -1) {
           $scope.httpLabel = ""; //hide httpLabel when the root is created with www at the start
