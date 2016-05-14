@@ -10,27 +10,26 @@
                       ng-repeat="item in department|filter: {title:whichCondition}" >
 
                 <h1 ng-bind-html ="item.title" ></h1>
-                <div ng-repeat="info in item.data">
-
-
-                    <h3 ng-hide="info.image">{{info.title}}</h3>
-                    <h2 ng-hide="info.image">{{info.subtitle}}</h2>
-                    <h3 ng-hide="info.image">{{info.heading}}</h3>
-                    <h2 ng-hide="info.image">{{info.subheading}}</h2>
-                    <p ng-hide="info.image">{{info.info1}}</p>
-                    <p ng-hide="info.image">{{info.info2}}</p>
-                    <h2 ng-hide="info.image"><strong>{{info.bold}}</strong></h2>
-                    <h2 ng-hide="info.image"><u>{{info.underline}}</u></h2>
-                    <h2 ng-hide="info.image">{{info.list}}</h2>
-                    <p ng-hide="info.image" ng-bind-html="info.item"></p>
-
-                    <div ng-show="info.image" ng-repeat = "image in info.src">
-                      <img  class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}"/>
-                    
-                    
-                    </div>
-
+                <div ng-init ="isImage = item.data[0].image" ng-hide = "isImage">
+                  <div ng-repeat="info in item.data track by $index">
+                    <h3>{{info.title}}</h3>
+                    <h2>{{info.subtitle}}</h2>
+                    <h3>{{info.heading}}</h3>
+                    <h2>{{info.subheading}}</h2>
+                    <p>{{info.info1}}</p>
+                    <p>{{info.info2}}</p>
+                    <h2><strong>{{info.bold}}</strong></h2>
+                    <h2><u>{{info.underline}}</u></h2>
+                    <h2>{{info.list}}</h2>
+                    <p ng-bind-html="info.item"></p>
+                  </div>
                 </div>
+
+                <div ng-show= 'isImage' ng-repeat = "image in item.data[1].src">
+
+                  <img  class="path"  ng-src="{{root}}/{{specialty}}/docs/images/{{image}}"/>
+                </div>
+
             </ion-item>
 
 
