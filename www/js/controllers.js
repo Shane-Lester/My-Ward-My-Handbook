@@ -71,12 +71,12 @@ angular.module('starter.controllers', [])
 
 }])
 
-.controller('SettingsController', ["$scope", "NoteStore", "$state", "$stateParams", "$localstorage", "$ionicHistory", "Data", "$ionicLoading", "$ionicHistory",
-  function($scope, NoteStore, $state, $stateParams, $localstorage, $ionicHistory, Data, $ionicLoading, $ionicHistory) {
+.controller('SettingsController', ["$scope", "NoteStore", "$state", "$stateParams", "$ImageCacheFactory", "$ionicHistory", "Data", "$ionicLoading", "$ionicHistory",
+  function($scope, NoteStore, $state, $stateParams, $ImageCacheFactory, $ionicHistory, Data, $ionicLoading, $ionicHistory) {
     var newData;
 
-    $scope.cached = {now:true};
     $scope.$on('$ionicView.enter', function() {
+      $scope.cached = {now:true};
       $scope.rootIsSet = false;
       $scope.buttonColour = $scope.clinicalButtonColour = $scope.departmentButtonColour = "button-positive";
       $scope.rootText = "Set root web address";
@@ -128,53 +128,122 @@ angular.module('starter.controllers', [])
 
     $scope.loadDepartmentData = function() {
       newData = Data.getSettings();
-      if (!newData || !newData.root || !newData.specialty){
+      if (!newData || !newData.root || !newData.specialty) {
         return
       }
       newData.department = newData.root + "/" + newData.specialty + "/docs" + "/department.json";
+      // console.log('not yet implemented loadDepartmentData');
       $ionicLoading.show({
         template: 'Loading Department Data'
       });
-      Data.loadDepartmentData(newData.department).then(function(data) {
+      departmentURL = Data.getDepartmentSettings();
+        Data.loadDepartmentData(newData.department).then(function(data) {
         if (data.department) {
           Data.storeSettings(newData);
           $scope.departmentButtonText = "Department Data LOADED";
           $scope.departmentButtonColour = "button-balanced";
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: 'Checking for images'
+          });
+          // console.log(data.department);
+          var imageArray = _.filter(data.department, function(item){
+            // console.log(item.data[0].image == true);
+            return item.data[0].image == true;
+          });
+          // console.log(imageArray);
+          if (imageArray.length > 0) {
+            console.log('found images');
+            $ionicLoading.hide();
+            $ionicLoading.show({
+              template: 'Loading images'
+            });
+            imageArray = _.map(imageArray, 'data[1].src');
+            imageArray = _.flatten(imageArray);
+            imageArray= _.map(imageArray,function(item){
+               return item = newData.root + '/' + newData.specialty +'/' + 'docs/images/' + item;
+            })
+            console.log(imageArray);
+            $ImageCacheFactory.Cache(imageArray).then(function(){
+              console.log('loading department images');
+              $ionicLoading.hide();
+            },
+          function(){
+            $ionicLoading.hide();
+          });
+
+          } else {
+            console.log('no images');
+            $ionicLoading.hide();
+          }
         }
-
-
         if (data == false) {
           console.log("error");
           $scope.departmentButtonText = "Department Data FAILED";
           $scope.departmentButtonColour = "button-assertive";
+          $ionicLoading.hide();
         }
-        $ionicLoading.hide();
       });
     };
 
     $scope.loadClinicalData = function() {
-      newData = Data.getSettings();
-      if (!newData || !newData.root || !newData.specialty){
-        return
-      }
-      newData.clinical = newData.root + "/" + newData.specialty + "/docs" + "/clinical.json";
-      $ionicLoading.show({
-        template: 'Loading Clinical Data'
-      });
-      Data.loadClinicalData(newData.clinical).then(function(data) {
-        if (data.clinical) {
-          Data.storeSettings(newData);
-          $scope.clinicalButtonText = "Clinical Data LOADED";
-          $scope.clinicalButtonColour = "button-balanced";
-        }
-        if (data == false) {
-          console.log('error');
-          $scope.clinicalButtonText = "Department Data FAILED";
-          $scope.clinicalButtonColour = "button-assertive";
-        }
-        $ionicLoading.hide();
-      });
+    newData = Data.getSettings();
+    if (!newData || !newData.root || !newData.specialty) {
+      return
     }
+    newData.clinical = newData.root + "/" + newData.specialty + "/docs" + "/clinical.json";
+    $ionicLoading.show({
+      template: 'Loading Clinical Data'
+    });
+    Data.loadClinicalData(newData.clinical).then(function(data) {
+      if (data.clinical) {
+        Data.storeSettings(newData);
+        $scope.clinicalButtonText = "Clinical Data LOADED";
+        $scope.clinicalButtonColour = "button-balanced";
+        $ionicLoading.hide();
+        $ionicLoading.show({
+          template: 'Checking for images'
+        });
+        imageArray = _.filter(data.clinical, function(item){
+          return item.picture || item.image;
+        });
+        console.log(imageArray);
+        if (imageArray.length > 0) {
+          $ionicLoading.hide();
+          $ionicLoading.show({
+            template: 'Loading images'
+          });
+
+          imageArray = _.map(imageArray, function(item){
+            return item.src || item.picture;
+          })
+          console.log(imageArray)
+          imageArray = _.flatten(imageArray);
+          console.log(imageArray)
+          imageArray =_.map(imageArray,function(item){
+            return newData.root + '/' + newData.specialty +'/' + 'docs/images/' + item;
+          })
+          console.log(imageArray);
+          $ImageCacheFactory.Cache(imageArray).then(function(){
+            console.log('loading clinical images');
+            $ionicLoading.hide();
+          },
+        function(){
+          $ionicLoading.hide();
+        });
+        } else {
+          console.log('no images');
+          $ionicLoading.hide();
+        }
+      }
+      if (data == false) {
+        console.log('error');
+        $scope.clinicalButtonText = "Department Data FAILED";
+        $scope.clinicalButtonColour = "button-assertive";
+        $ionicLoading.hide();
+      }
+    });
+  }
 
     $scope.goHome = function() {
       $ionicHistory.nextViewOptions({

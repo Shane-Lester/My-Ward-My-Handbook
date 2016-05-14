@@ -11,7 +11,7 @@
                       ng-repeat="clinical in clinicals|filter: {title:whichCondition}" >
 
                 <h1 ng-bind-html ="clinical.title" ></h1>
-                <img ng-if = "!clinical.src" ng-src= "{{root}}/{{specialty}}/docs/images/{{clinical.image}}" width="100%">
+                <img ng-if = "!clinical.src" ng-src= "{{root}}/{{specialty}}/docs/images/{{clinical.picture}}" width="100%">
 
                 <h2 ng-show="!clinical.src" ng-bind-html ="clinical.summary"></h2><ng-show=!clinical.src hr/>
 
