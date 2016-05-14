@@ -146,10 +146,16 @@ angular.module('starter.controllers', [])
           $ionicLoading.show({
             template: 'Checking for images'
           });
+          if(!data.department){
+            $ionicLoading.hide();;
+            return
+          }
           // console.log(data.department);
           var imageArray = _.filter(data.department, function(item){
             // console.log(item.data[0].image == true);
-            return item.data[0].image == true;
+            if(item.data[0]){
+              return item.data[0].image == true;
+            }
           });
           // console.log(imageArray);
           if (imageArray.length > 0) {
@@ -207,7 +213,7 @@ angular.module('starter.controllers', [])
         imageArray = _.filter(data.clinical, function(item){
           return item.picture || item.image;
         });
-        console.log(imageArray);
+        // console.log(imageArray);
         if (imageArray.length > 0) {
           $ionicLoading.hide();
           $ionicLoading.show({
